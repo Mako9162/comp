@@ -1,0 +1,22 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Packaging
+build/
+dist/
+installer/output/
+*.spec.bak
+
+# Local files and generated compressed data
+*.ndac
+*.partial
+assets/default_model.pt
+
+# Editor and operating system files
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
