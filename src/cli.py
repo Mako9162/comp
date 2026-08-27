@@ -7,7 +7,7 @@ from typing import List, Optional
 from .engine import compress, decompress, validate_archive, get_archive_info
 from .utils.helpers import format_file_size
 
-VERSION = "1.5.0"
+VERSION = "2.0.0"
 
 # Códigos de salida estándar
 EXIT_SUCCESS = 0
@@ -24,7 +24,7 @@ def run_cli(args: List[str]) -> int:
     """
     parser = argparse.ArgumentParser(
         prog="ndac",
-        description="NDAC — Compresor y Protector de Archivos Ultra (NDC5/NDC4/NDC3)",
+        description="NDAC — Compresor y Protector de Archivos Ultra (NDC6/NDC5/NDC4/NDC3)",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument("--version", "-v", action="version", version=f"NDAC versión {VERSION}")

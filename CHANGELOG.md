@@ -7,7 +7,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 
 ---
 
-## [2.0.0-dev] - 2026-08-27 (En Desarrollo)
+## [2.0.0] - 2026-08-27
 
 ### 🚀 Novedades y Arquitectura NDC6
 - **Formato Criptográfico Moderno NDC6 (AEAD)**:

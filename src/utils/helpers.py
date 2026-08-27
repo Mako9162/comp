@@ -47,6 +47,13 @@ def sanitize_filename(filename: str) -> str:
     return clean_name
 
 
+def sanitize_relative_path(rel_path: str) -> str:
+    """Sanitiza y preserva estructuras de directorios relativas limpiando secuencias peligrosas."""
+    clean = rel_path.replace("\\", "/").strip("/")
+    parts = [re.sub(r'[\x00-\x1f\x7f]', '', p) for p in clean.split("/") if p and p != "." and p != ".."]
+    return "/".join(parts)
+
+
 def safe_extract_path(destination_dir: str, rel_path: str) -> str:
     """
     Normaliza la ruta relativa y verifica estrictamente que al unirse con destination_dir

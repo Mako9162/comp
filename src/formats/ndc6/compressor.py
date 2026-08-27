@@ -10,7 +10,7 @@ from .crypto import generate_salt, generate_nonce, derive_master_key, expand_sub
 from .header import pack_header_v6, build_header_aad
 from .metadata import pack_metadata, encrypt_metadata_blob
 from .chunks import write_chunk_frame
-from ...utils.helpers import sanitize_filename
+from ...utils.helpers import sanitize_filename, sanitize_relative_path
 
 
 def compute_file_crc32(filepath: str) -> int:
@@ -94,7 +94,7 @@ def compress_ndc6(
                     for d in dirs:
                         full_d = os.path.join(root, d)
                         rel_d = os.path.relpath(full_d, os.path.dirname(abs_src))
-                        rel_d = sanitize_filename(rel_d.replace("\\", "/"))
+                        rel_d = sanitize_relative_path(rel_d)
                         entries.append({
                             "entry_type": 2,
                             "rel_path": rel_d,
@@ -105,7 +105,7 @@ def compress_ndc6(
                     for f in files:
                         full_f = os.path.join(root, f)
                         rel_f = os.path.relpath(full_f, os.path.dirname(abs_src))
-                        rel_f = sanitize_filename(rel_f.replace("\\", "/"))
+                        rel_f = sanitize_relative_path(rel_f)
                         f_size = os.path.getsize(full_f)
                         mtime = os.path.getmtime(full_f)
                         crc = compute_file_crc32(full_f)

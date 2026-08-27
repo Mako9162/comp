@@ -1,5 +1,5 @@
 #define AppName "NDAC Compresor de Archivos"
-#define AppVersion "1.5.0"
+#define AppVersion "2.0.0"
 #define AppPublisher "Mako9162"
 #define AppExeName "CompresorArchivos.exe"
 
