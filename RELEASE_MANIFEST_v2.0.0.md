@@ -15,8 +15,8 @@
 | :--- | :--- |
 | **Nombre de Archivo** | `CompresorArchivos.exe` |
 | **Ubicación** | `dist/CompresorArchivos.exe` |
-| **Tamaño Binario** | `41,817,336 bytes` (39.88 MB) |
-| **Hash SHA-256** | `0DEAEACAB6457CFA89FE9C340E2E20514E6BE100E6347169AB5DBB111E1DBECC` |
+| **Tamaño Binario** | `41,818,688 bytes` (39.88 MB) |
+| **Hash SHA-256** | `AECF5748053ECF3E0D1DE98E3F12E39F15896216D71E74DCC7E7B6FF96B47208` |
 | **Firma Checksum File** | `SHA256SUMS.txt` |
 
 ---

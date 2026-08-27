@@ -3,7 +3,7 @@ from typing import Dict, Any
 TRANSLATIONS: Dict[str, Dict[str, str]] = {
     "es": {
         "app_title": "NDAC — Compresor de Archivos Ultra",
-        "app_subtitle": "Compresion multielemento (NDC5) con cifrado PBKDF2-HMAC-SHA256.",
+        "app_subtitle": "Compresion multielemento (NDC6) con cifrado AEAD AES-256-GCM y Argon2id.",
         "btn_validate": "🔍 Validar",
         "btn_info": "ℹ️ Propiedades",
         "btn_settings": "⚙️ Opciones",
@@ -54,7 +54,7 @@ TRANSLATIONS: Dict[str, Dict[str, str]] = {
     },
     "en": {
         "app_title": "NDAC — Ultra File Compressor",
-        "app_subtitle": "Multi-item compression (NDC5) with PBKDF2-HMAC-SHA256 encryption.",
+        "app_subtitle": "Multi-item compression (NDC6) with AEAD AES-256-GCM and Argon2id encryption.",
         "btn_validate": "🔍 Validate",
         "btn_info": "ℹ️ Properties",
         "btn_settings": "⚙️ Settings",
