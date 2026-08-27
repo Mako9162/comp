@@ -1,7 +1,7 @@
 # Style Sheet moderno QSS para PyQt6 (Tema Cyber Dark Glass)
 
 CYBER_DARK_GLASS_THEME = """
-QMainWindow {
+QMainWindow, QDialog {
     background-color: #0B0F19;
     color: #F8FAFC;
 }
@@ -35,7 +35,7 @@ QGroupBox::title {
     border: 2px dashed #0284C7;
     border-radius: 16px;
     color: #94A3B8;
-    padding: 24px;
+    padding: 20px;
     text-align: center;
     font-size: 14px;
     font-weight: 500;
@@ -54,8 +54,27 @@ QGroupBox::title {
     color: #ECFDF5;
 }
 
+/* Tabla de elementos seleccionados */
+QTableWidget {
+    background-color: #070A12;
+    border: 1px solid #1E293B;
+    border-radius: 10px;
+    gridline-color: #1E293B;
+    color: #F8FAFC;
+    selection-background-color: #0284C7;
+    selection-color: #FFFFFF;
+}
+
+QHeaderView::section {
+    background-color: #0F172A;
+    color: #38BDF8;
+    padding: 6px;
+    border: 1px solid #1E293B;
+    font-weight: 600;
+}
+
 /* Campos de entrada */
-QLineEdit {
+QLineEdit, QComboBox {
     background-color: #070A12;
     border: 1px solid #334155;
     border-radius: 8px;
@@ -64,9 +83,16 @@ QLineEdit {
     font-size: 13px;
 }
 
-QLineEdit:focus {
+QLineEdit:focus, QComboBox:focus {
     border: 1px solid #38BDF8;
     background-color: #0F172A;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #0F172A;
+    border: 1px solid #334155;
+    selection-background-color: #0284C7;
+    color: #F8FAFC;
 }
 
 /* Botones Principales */
@@ -157,6 +183,13 @@ QProgressBar::chunk {
     border-radius: 7px;
 }
 
+/* Indicador de Fortaleza de Contraseña */
+#StrengthMeter {
+    border-radius: 4px;
+    height: 6px;
+    background-color: #334155;
+}
+
 /* Consola de Logs */
 QTextEdit {
     background-color: #05080E;
@@ -180,4 +213,3 @@ QRadioButton::indicator, QCheckBox::indicator {
     height: 18px;
 }
 """
-
