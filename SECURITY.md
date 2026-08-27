@@ -1,23 +1,29 @@
-# Politica de Seguridad
+# Política de Seguridad — NDAC v1.5.0
 
-## Alcance y Proteccion
+## Alcance y Protección
 
-El programa soporta compresion sin perdida y cifrado opcional de alta seguridad para archivos `.ndac` bajo el estandar **NDC4**:
+El programa soporta compresión sin pérdida, archivado multielemento (carpetas y múltiples archivos) y cifrado opcional de alta seguridad para archivos `.ndac` bajo las especificaciones **NDC4** y **NDC5**:
 
-1. **Cifrado de Datos y Autenticacion**:
-   - Cuando se asigna una contrasena, el archivo se protege mediante **PBKDF2-HMAC-SHA256** con **100,000 iteraciones** y un **Salt aleatorio de 16 bytes** por archivo.
-   - Incluye una firma de autenticacion **HMAC-SHA256** de 32 bytes en la cabecera. Si la contrasena introducida es incorrecta o los datos fueron alterados, la descompresion se cancela de forma inmediata sin modificar ningun archivo en el disco.
-2. **Proteccion contra Path Traversal**:
-   - Los nombres de archivo almacenados en la cabecera son sanitizados automaticamente al descomprimir para evitar que se escriban fuera de la carpeta de destino.
-3. **Validacion de Integridad**:
-   - Todos los archivos verifican la suma de comprobacion **CRC32** e imponen un limite de seguridad en el tamano declarado antes de completar la restauracion.
+1. **Cifrado de Datos y Autenticación Criptográfica**:
+   - Protección por contraseña con derivación de claves mediante **PBKDF2-HMAC-SHA256** (100,000 iteraciones + Salt criptográfico aleatorio de 16 bytes por paquete `secrets.token_bytes(16)`).
+   - Firma de autenticación **HMAC-SHA256** de 32 bytes en la cabecera del contenedor.
+   - Verificación de la firma HMAC en **tiempo constante** con `hmac.compare_digest()` para prevenir ataques de temporización (timing attacks).
+   - Reclusión e interrupción inmediata si la clave es incorrecta o el archivo ha sido alterado, sin realizar escrituras intermedias a disco.
 
-## Buenas Practicas de Seguridad
+2. **Protección Anti Path-Traversal**:
+   - Sanitización estricta de rutas con `safe_extract_path()`.
+   - Bloqueo de escrituras fuera del directorio de destino (`../../`, `C:\`, `/var/`, secuencias de escape y nombres reservados en Windows como `CON`, `PRN`, `AUX`, `NUL`, `COM1-9`, `LPT1-9`).
+   - Límite máximo de profundidad de subcarpetas anidadas (`MAX_PATH_DEPTH = 50`).
 
-- **Fortaleza de la contrasena**: Utiliza contrasenas fuertes y unicas para proteger archivos confidenciales. Sin la clave correcta, el descifrado es matematicamente inviable.
-- **Archivos de fuentes no confiables**: Al restaurar archivos `.ndac` descargados de internet, asegurate de verificar su origen antes de abrirlos.
+3. **Protección Anti Compression-Bomb / Zip-Bomb**:
+   - Verificación de consistencia entre el tamaño total declarado en cabecera y la suma de elementos descompuestos.
+   - Control de ratio de expansión anómalo y límite máximo en la cantidad de elementos contenidos (`MAX_TOTAL_FILES = 100,000`).
 
-## Reportar Problemas
+4. **Validación de Integridad CRC32**:
+   - Verificación de suma de comprobacion **CRC32** individual por archivo y global del contenedor en streaming progresivo.
 
-Si descubres un problema de seguridad o vulnerabilidad, no publiques detalles explotables en los issues publicos de GitHub. Contacta de forma privada al mantenedor del repositorio incluyendo una reproduccion minima.
+---
 
+## Reportar Problemas de Seguridad
+
+Si descubres una vulnerabilidad o problema de seguridad, no publiques detalles exploitables en los issues públicos de GitHub. Contacta de forma privada al mantenedor del repositorio adjuntando un caso de reproducción mínimo.
