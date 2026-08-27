@@ -565,8 +565,17 @@ class MainWindow(QMainWindow):
                 import subprocess
                 subprocess.run(["open" if sys.platform == "darwin" else "xdg-open", folder])
 
+    def _get_target_ndac_path(self, title: str) -> Optional[str]:
+        # Si ya hay un archivo .ndac cargado en la lista, usarlo directamente
+        for p in self.selected_paths:
+            if p.lower().endswith(".ndac") and os.path.isfile(p):
+                return p
+        # Si no, solicitar al usuario que seleccione uno
+        path, _ = QFileDialog.getOpenFileName(self, title, "", "Archivos NDAC (*.ndac)")
+        return path or None
+
     def action_validate(self):
-        path, _ = QFileDialog.getOpenFileName(self, "Seleccionar archivo .ndac para validar", "", "Archivos NDAC (*.ndac)")
+        path = self._get_target_ndac_path("Seleccionar archivo .ndac para validar")
         if path:
             password = None
             if self.chk_use_password.isChecked():
@@ -575,7 +584,7 @@ class MainWindow(QMainWindow):
             dlg.exec()
 
     def action_info(self):
-        path, _ = QFileDialog.getOpenFileName(self, "Seleccionar archivo .ndac", "", "Archivos NDAC (*.ndac)")
+        path = self._get_target_ndac_path("Seleccionar archivo .ndac para propiedades")
         if path:
             try:
                 info = get_archive_info(path)
@@ -583,6 +592,7 @@ class MainWindow(QMainWindow):
                 dlg.exec()
             except Exception as exc:
                 QMessageBox.warning(self, "Error al leer propiedades", str(exc))
+
 
     def refresh_ui_texts(self):
         lang = self.settings.get("language", "es")
