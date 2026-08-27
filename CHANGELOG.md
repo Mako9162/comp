@@ -7,6 +7,24 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 
 ---
 
+## [2.0.0-dev] - 2026-08-27 (En Desarrollo)
+
+### 🚀 Novedades y Arquitectura NDC6
+- **Formato Criptográfico Moderno NDC6 (AEAD)**:
+  - Cifrado Autenticado de Extremo a Extremo con **AES-256-GCM** y firma AEAD Tag de 128 bits (16B) por cada bloque de 1 MB.
+  - Derivación de claves memory-hard con **Argon2id** (64 MB RAM, 3 iteraciones) e infraestructura **HKDF-SHA256** para separación de subclaves (`Payload Key` y `Metadata Key`).
+  - Nonces deterministas de 96 bits amarrados al índice de bloque $\text{Chunk\_Nonce}[i] = \text{base\_nonce}_{12B} \oplus \text{Pad64To96}(i_{64bit})$.
+  - Cifrado y ocultación total de metadatos (nombres de archivo, rutas relativas, marcas de tiempo y tamaños).
+  - Autenticación de cabecera fija mediante Datos Asociados Autenticados (**AAD**).
+  - Integración del motor de compresión de ultra-alta velocidad **Zstandard (zstd)**.
+  - Arquitectura modular aislada en `src/formats/ndc6/`.
+- **Despachador Multiformato Transparente**:
+  - Función `detect_format()` que identifica automáticamente contenedores NDC3, NDC4, NDC5 y NDC6.
+- **Suite de Pruebas NDC6 y Red Team**:
+  - Nuevas suites `tests/test_ndc6.py`, `tests/test_ndc6_crypto.py` y `tests/test_red_team_ndc6.py`.
+
+---
+
 ## [1.5.0] - 2026-08-27
 
 ### 🚀 Novedades y Características Principales

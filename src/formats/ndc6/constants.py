@@ -1,0 +1,41 @@
+import struct
+
+MAGIC_HEADER_V6 = b"NDC6"
+FORMAT_VERSION_V6 = 6
+
+# Identificadores de KDF
+KDF_ARGON2ID = 0x01
+KDF_SCRYPT = 0x02
+KDF_PBKDF2 = 0x03
+
+# Identificadores de Cifrado AEAD
+CIPHER_AES_256_GCM = 0x01
+CIPHER_CHACHA20_POLY1305 = 0x02
+
+# Identificadores de Compresión
+COMPRESSION_NONE = 0x00
+COMPRESSION_DEFLATE = 0x01
+COMPRESSION_ZSTD = 0x02
+
+# Banderas de Cabecera (Flags)
+FLAG_IS_ENCRYPTED = 0x0001
+FLAG_METADATA_ENCRYPTED = 0x0002
+
+# Formato y tamaño de la cabecera fija de 80 bytes (Big-Endian)
+# >4sBHBBBI16s12sIIHIQ16s
+HEADER_FORMAT_V6 = ">4sBHBBBI16s12sIIHIQ16s"
+HEADER_SIZE_V6 = struct.calcsize(HEADER_FORMAT_V6)  # 80 bytes
+
+# Parámetros KDF Argon2id predeterminados
+DEFAULT_ARGON2_MEMORY_KB = 65536  # 64 MB
+DEFAULT_ARGON2_TIME_COST = 3     # 3 iteraciones
+DEFAULT_ARGON2_PARALLELISM = 4
+
+# Tamaño de bloque de streaming (1 MB)
+DEFAULT_CHUNK_SIZE = 1024 * 1024
+
+# Límites de seguridad
+MAX_ORIGINAL_SIZE_V6 = 100 * 1024 * 1024 * 1024 * 1024  # 100 TB
+MAX_TOTAL_FILES_V6 = 10_000_000
+MAX_PATH_DEPTH_V6 = 100
+MAX_REL_PATH_LEN_V6 = 4096

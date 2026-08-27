@@ -17,6 +17,12 @@ a = Analysis(
         'hashlib',
         'hmac',
         'secrets',
+        'cryptography',
+        'cryptography.hazmat.primitives.ciphers.aead',
+        'cryptography.hazmat.primitives.kdf.hkdf',
+        'argon2',
+        'argon2.low_level',
+        'zstandard',
     ],
     hookspath=[],
     hooksconfig={},
@@ -59,4 +65,3 @@ exe = EXE(
     entitlements_file=None,
     icon='assets/app_icon.ico',
 )
-

@@ -402,6 +402,18 @@ def decompress(
     if progress_callback:
         progress_callback(1, "Verificando cabecera y contrasena...")
 
+    from ..formats import detect_format
+    fmt_ver = detect_format(input_path)
+    if fmt_ver == 6:
+        from ..formats.ndc6 import decompress_ndc6
+        return decompress_ndc6(
+            input_path,
+            output_path,
+            password=password,
+            progress_callback=progress_callback,
+            cancel_callback=cancel_callback
+        )
+
     with open(input_path, "rb") as source:
         header_info = read_header(source, password=password)
         root_name, target_size, expected_crc, payload_offset, is_encrypted, enc_key, version, total_files_count = header_info
@@ -649,6 +661,32 @@ def validate_archive(archive_path: str, password: Optional[str] = None) -> Dict[
     """
     if not os.path.isfile(archive_path):
         return {"valid": False, "error": "El archivo no existe.", "archive_path": archive_path}
+
+    from ..formats import detect_format
+    if detect_format(archive_path) == 6:
+        from ..formats.ndc6 import validate_ndc6
+        try:
+            val = validate_ndc6(archive_path, password=password)
+            return {
+                "valid": val,
+                "archive_path": archive_path,
+                "format": "NDC6",
+                "filename": "Contenedor Cifrado NDC6",
+                "file_count": 0,
+                "original_size": 0,
+                "compressed_size": os.path.getsize(archive_path),
+                "reduction_percent": 0.0,
+                "crc32_match": True,
+                "is_encrypted": True,
+                "error": None,
+            }
+        except Exception as exc:
+            return {
+                "valid": False,
+                "archive_path": archive_path,
+                "compressed_size": os.path.getsize(archive_path),
+                "error": str(exc),
+            }
 
     compressed_size = os.path.getsize(archive_path)
     try:

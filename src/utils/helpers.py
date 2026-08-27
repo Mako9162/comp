@@ -335,7 +335,23 @@ def inspect_header(file_object) -> Dict[str, Any]:
         raise ValueError("El archivo esta vacio o corrupto.")
     file_object.seek(0)
 
-    if magic == MAGIC_HEADER_V5:
+    if magic == b"NDC6":
+        from ..formats.ndc6.header import unpack_header_v6
+        fixed_header = file_object.read(80)
+        hdr = unpack_header_v6(fixed_header)
+        return {
+            "format": "NDC6",
+            "version": hdr["version"],
+            "is_encrypted": True,
+            "filename": "Contenedor Cifrado NDC6",
+            "original_size": 0,
+            "total_files_count": 0,
+            "crc32_checksum": 0,
+            "payload_offset": hdr["total_header_size"],
+            "salt": hdr["salt"],
+            "hmac_tag": hdr["header_aead_tag"],
+        }
+    elif magic == MAGIC_HEADER_V5:
         fixed_header = file_object.read(HEADER_SIZE_V5)
         if len(fixed_header) != HEADER_SIZE_V5:
             raise ValueError("Cabecera NDC5 incompleta.")
