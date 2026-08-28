@@ -12,6 +12,58 @@ QWidget {
     color: #E2E8F0;
 }
 
+/* ScrollArea y ScrollBars Adaptativos */
+QScrollArea {
+    background-color: transparent;
+    border: none;
+}
+
+QScrollBar:vertical {
+    background-color: #0B0F19;
+    width: 10px;
+    margin: 0px;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:vertical {
+    background-color: #1E293B;
+    min-height: 25px;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background-color: #0284C7;
+}
+
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    height: 0px;
+    border: none;
+    background: none;
+}
+
+QScrollBar:horizontal {
+    background-color: #0B0F19;
+    height: 10px;
+    margin: 0px;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:horizontal {
+    background-color: #1E293B;
+    min-width: 25px;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:horizontal:hover {
+    background-color: #0284C7;
+}
+
+QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
+    width: 0px;
+    border: none;
+    background: none;
+}
+
 /* Tarjetas y Contenedores */
 QGroupBox {
     background-color: #131B2E;

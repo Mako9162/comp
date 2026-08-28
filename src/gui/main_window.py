@@ -6,10 +6,10 @@ from typing import List, Optional
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QDragEnterEvent, QDropEvent, QFont, QIcon
 from PyQt6.QtWidgets import (QAbstractItemView, QButtonGroup, QCheckBox,
-                             QFileDialog, QGroupBox, QHBoxLayout, QHeaderView,
+                             QFileDialog, QFrame, QGroupBox, QHBoxLayout, QHeaderView,
                              QInputDialog, QLabel, QLineEdit, QMainWindow,
                              QMessageBox, QProgressBar, QPushButton,
-                             QRadioButton, QTableWidget, QTableWidgetItem,
+                             QRadioButton, QScrollArea, QTableWidget, QTableWidgetItem,
                              QTextEdit, QVBoxLayout, QWidget)
 
 from .dialogs import ArchiveInfoDialog, ArchiveValidationDialog, SettingsDialog
@@ -109,8 +109,9 @@ class DropZoneWidget(QLabel):
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("NDAC — Compresor y Protector de Archivos Ultra (NDC5/NDC4/NDC3)")
-        self.resize(900, 780)
+        self.setWindowTitle("NDAC — Compresor y Protector de Archivos Ultra")
+        self.setMinimumSize(540, 460)
+        self.resize(860, 680)
         self.setStyleSheet(CYBER_DARK_GLASS_THEME)
 
         icon_path = os.path.join(os.path.dirname(__file__), "..", "..", "assets", "app_icon.png")
@@ -141,21 +142,28 @@ class MainWindow(QMainWindow):
             self.add_paths(args)
 
     def _init_ui(self):
+        scroll_area = QScrollArea()
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setFrameShape(QFrame.Shape.NoFrame)
+        scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        self.setCentralWidget(scroll_area)
 
         root = QWidget()
-        self.setCentralWidget(root)
+        scroll_area.setWidget(root)
+
         layout = QVBoxLayout(root)
-        layout.setSpacing(12)
-        layout.setContentsMargins(18, 16, 18, 16)
+        layout.setSpacing(10)
+        layout.setContentsMargins(14, 12, 14, 12)
 
         # Header bar & Tool buttons
         header_layout = QHBoxLayout()
         title_box = QVBoxLayout()
         self.lbl_title = QLabel("NDAC — Compresor de Archivos Ultra")
-        self.lbl_title.setFont(QFont("Segoe UI", 16, QFont.Weight.Bold))
+        self.lbl_title.setFont(QFont("Segoe UI", 15, QFont.Weight.Bold))
         self.lbl_title.setStyleSheet("color: #38BDF8;")
-        self.lbl_subtitle = QLabel("Compresion multielemento (NDC5) con cifrado PBKDF2-HMAC-SHA256.")
-        self.lbl_subtitle.setStyleSheet("color: #94A3B8; font-size: 12px;")
+        self.lbl_subtitle = QLabel("Compresion multielemento (NDC6) con cifrado AEAD AES-256-GCM y Argon2id.")
+        self.lbl_subtitle.setStyleSheet("color: #94A3B8; font-size: 11px;")
         title_box.addWidget(self.lbl_title)
         title_box.addWidget(self.lbl_subtitle)
         header_layout.addLayout(title_box, 1)
@@ -183,11 +191,14 @@ class MainWindow(QMainWindow):
         # Drop Zone & Item Table
         self.drop_zone = DropZoneWidget()
         self.drop_zone.set_callback(self.add_paths)
+        self.drop_zone.setMinimumHeight(65)
         layout.addWidget(self.drop_zone)
 
         # Lista / Tabla de Elementos
         self.items_box = QGroupBox("Elementos Seleccionados para Procesar")
         items_layout = QVBoxLayout(self.items_box)
+        items_layout.setContentsMargins(12, 12, 12, 12)
+        items_layout.setSpacing(8)
 
         self.tbl_items = QTableWidget(0, 3)
         self.tbl_items.setHorizontalHeaderLabels(["Nombre / Ruta", "Tipo", "Tamano"])
@@ -195,7 +206,7 @@ class MainWindow(QMainWindow):
         self.tbl_items.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.ResizeToContents)
         self.tbl_items.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)
         self.tbl_items.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
-        self.tbl_items.setMinimumHeight(130)
+        self.tbl_items.setMinimumHeight(100)
 
         items_layout.addWidget(self.tbl_items)
 
