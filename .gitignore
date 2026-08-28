@@ -9,7 +9,6 @@ build/
 dist/
 installer/output/
 *.spec.bak
-release/*.exe
 
 # Local files and generated compressed data
 *.ndac
